@@ -2,11 +2,13 @@
   <el-button>Commit</el-button>
 </template>
 
-<script>
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
 
-export default {
-  name: 'App',
+@Options({
   components: {
-  }
-}
+    
+  },
+})
+export default class App extends Vue {}
 </script>
