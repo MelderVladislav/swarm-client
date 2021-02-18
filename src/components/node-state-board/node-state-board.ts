@@ -17,7 +17,7 @@ export default defineComponent({
       let balances = (await beeClient.BeeDebug.getAllBalances()).balances
 
       let peersList = composePeers(peersAddresses, settlements, balances);
-      beeClient.BeeDebug.cashoutLastCheque()
+
       peersStateModel.value = peersList;
     })
 
