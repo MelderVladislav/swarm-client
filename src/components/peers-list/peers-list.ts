@@ -1,5 +1,5 @@
 import { defineComponent, ref, onMounted } from 'vue'
-import peerClient from '../../services/peers-client'
+import peerClient from '../../services/beeClient'
 
 export default defineComponent({
   props: {
