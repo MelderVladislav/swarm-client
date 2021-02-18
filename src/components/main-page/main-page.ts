@@ -1,13 +1,13 @@
 import { defineComponent, ref } from 'vue'
 import FileUploader from '../FileUploader.vue';
-import PeersList from '../peers-list/PeersList.vue'
+import NodeStateBoard from '../node-state-board/NodeStateBoard.vue'
 
 export default defineComponent({
   props: {
   },
   components: {
     FileUploader,
-    PeersList,
+    NodeStateBoard,
   },
   setup(props) {
     

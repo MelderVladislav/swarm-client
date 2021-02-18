@@ -1,6 +1,4 @@
 <template>
-  <test-component message="sanyek"></test-component>
-  <el-button>Commit</el-button>
   <main-page></main-page>
 </template>
 
