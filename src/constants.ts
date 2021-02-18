@@ -1,5 +1,5 @@
 class Constants {
-  readonly BeeAddress = "http://localhost:1633";
+  readonly BeeAddress = "https://swarm.dapplets.org";
   readonly BeeDebugAddress = "http://localhost:1735";
 }
 

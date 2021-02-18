@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Bee } from "@ethersphere/bee-js";
+import beeClient from "@/services/beeClient";
 import { Vue } from "vue-class-component";
 
 export default class FileUploader extends Vue {
@@ -16,8 +16,7 @@ export default class FileUploader extends Vue {
   async uploadButtonClickHandler() {
     this.uploading = true;
     const file: File = this.input.input.files[0];
-    const bee = new Bee("http://localhost:1633");
-    const hash = await bee.uploadFile(file, file.name);
+    const hash = await beeClient.Bee.uploadFile(file, file.name);
     this.uploading = false;
     this.hash = hash;
   }
