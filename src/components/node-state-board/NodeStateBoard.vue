@@ -23,6 +23,19 @@
         label="Balance"
         width="180">
       </el-table-column>
+      <el-table-column
+      fixed="right"
+      label="Operations"
+      width="120">
+      <template #default="scope">
+        <el-button
+          @click.prevent="getPaymentInfo(scope.$index)"
+          type="text"
+          size="small">
+          Remove
+        </el-button>
+      </template>
+    </el-table-column>
     </el-table>
   </div>
 </template>

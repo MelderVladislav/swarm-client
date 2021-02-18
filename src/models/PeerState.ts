@@ -3,4 +3,5 @@ export class PeerState {
   balance: number;
   received: number;
   sent: number;
+  lastCacheoutHash: string;
 }
