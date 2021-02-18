@@ -7,4 +7,4 @@
   </el-tabs>
 </template>
 
-<script lang="ts" src="./main-page.ts"></script>
+<script lang="tsx" src="./main-page.ts"></script>

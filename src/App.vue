@@ -6,13 +6,11 @@
 import { Options, Vue } from 'vue-class-component';
 import MainPage from './components/main-page/MainPage.vue'
 import TestComponent from './components/test-component/TestComponent.vue'
-import FileUploader from './components/file-uploader/FileUploader.vue'
 
 @Options({
   components: {
     TestComponent,
-    MainPage,
-    FileUploader,
+    MainPage
   },
 })
 export default class App extends Vue {}
