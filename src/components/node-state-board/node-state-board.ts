@@ -1,6 +1,6 @@
 import { PeerBalance } from '@ethersphere/bee-js/dist/modules/debug/balance'
 import { Settlements } from '@ethersphere/bee-js/dist/modules/debug/settlements'
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, computed } from 'vue'
 import beeClient from '../../services/beeClient'
 import { PeerState } from '../../models/PeerState'
 
@@ -10,26 +10,38 @@ export default defineComponent({
 
   setup() {
     let peersStateModel = ref([] as PeerState[])
-    
+    let isLoading = ref(true)
     onMounted(async () => {
+      try
+      {
       let peersAddresses = await beeClient.SwarmClient.getAllPeers();
       let settlements = (await beeClient.BeeDebug.getAllSettlements()).settlements
       let balances = (await beeClient.BeeDebug.getAllBalances()).balances
-
       let peersList = composeSettlements(settlements, balances);
 
       peersStateModel.value = peersList;
+      }
+      finally
+      {
+        isLoading.value = false;
+      }
     })
-    let getPaymentInfo = (index: any, tableData: PeerState[]) => console.log(index)
-    return {peersStateModel, getPaymentInfo}
+
+    return {peersStateModel, getPaymentInfo, isLoading}
   }
 })
 
-async function getPaymentInfo(index: number, tableData: PeerState[]) {
+async function getPaymentInfo(index: number, tableData: any) {
   let item = tableData[index];
-
-  let lastCachout = await beeClient.BeeDebug.getLastCashoutAction(item.address);
-  item.lastCacheoutHash = lastCachout.transactionHash
+  try
+  {
+    let lastCachout = await beeClient.BeeDebug.getLastCashoutAction(item.address);
+    item.lastCacheoutHash = lastCachout.transactionHash
+  }
+  catch(e)
+  {
+    item.lastCacheoutHash = 'NOT FOUND'
+  }
 }
 
 function composePeers(peers: Peer[], settlements: Settlements[], balances: PeerBalance[]): PeerState[] {

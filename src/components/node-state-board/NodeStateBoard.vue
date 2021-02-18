@@ -1,12 +1,11 @@
 <template>
   <div>
-      <el-table
+      <el-table v-loading="isLoading"
       :data="peersStateModel"
       style="width: 100%">
       <el-table-column
         prop="address"
-        label="Peer Address"
-        width="300">
+        label="Peer Address">
       </el-table-column>
       <el-table-column
         prop="sent"
@@ -24,15 +23,18 @@
         width="180">
       </el-table-column>
       <el-table-column
-      fixed="right"
+        prop="lastCacheoutHash"
+        label="Last Cacheout Hash">
+      </el-table-column>
+      <el-table-column
       label="Operations"
-      width="120">
+      width="180">
       <template #default="scope">
         <el-button
-          @click.prevent="getPaymentInfo(scope.$index)"
+          @click.prevent="getPaymentInfo(scope.$index, peersStateModel)"
           type="text"
           size="small">
-          Remove
+          Get last hash
         </el-button>
       </template>
     </el-table-column>
