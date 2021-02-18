@@ -4,6 +4,9 @@
     <el-tab-pane label="Sanyek">
       <file-uploader/>
     </el-tab-pane>
+    <el-tab-pane label="Peers">
+      <peers/>
+    </el-tab-pane>
   </el-tabs>
 </template>
 

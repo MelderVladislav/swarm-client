@@ -6,7 +6,11 @@ class SwarmClient {
     let response = await axios.get(constants.BeeDebugAddress + "/peers")
     let peers = response.data.peers as Peer[]
     return peers;
-  }  
+  }
+
+  async removePeer(address: string) {
+    await axios.delete(constants.BeeDebugAddress + "/peers/" + address);
+  }
 }
 
 export default new SwarmClient();
