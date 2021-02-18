@@ -11,6 +11,11 @@ class SwarmClient {
   async removePeer(address: string) {
     await axios.delete(constants.BeeDebugAddress + "/peers/" + address);
   }
+
+  async connectToPeer(address: string) {
+    const response = await axios.post(constants.BeeDebugAddress + "/connect/" + address);
+    return response.data;
+  }
 }
 
 export default new SwarmClient();
