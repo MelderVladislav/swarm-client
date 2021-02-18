@@ -1,0 +1,3 @@
+class Peer {
+  address: string;
+}
