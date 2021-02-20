@@ -1,6 +1,7 @@
 <script lang="ts">
 import beeClient from "../services/beeClient";
 import { Vue } from "vue-class-component";
+import notificationService from '../services/notificationService'
 
 type Peer = {
   address: string;
@@ -24,7 +25,7 @@ export default class Peers extends Vue {
       await beeClient.SwarmClient.removePeer(peer.address);
       this.peers = await beeClient.SwarmClient.getAllPeers();
     } catch (err) {
-      console.error(err);
+      notificationService.displayErrorMessage(err.message);
     } finally {
       this.loading = false;
     }
@@ -37,7 +38,7 @@ export default class Peers extends Vue {
       this.peers = await beeClient.SwarmClient.getAllPeers();
       this.loading = false;
     } catch (err) {
-      console.error(err);
+      notificationService.displayErrorMessage(err.message);
     } finally {
       this.loading = false;
     }
