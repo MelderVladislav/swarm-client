@@ -15,7 +15,9 @@ export default class Peers extends Vue {
   newPeerAddress = "";
 
   get etherscanUrl() {
-    return 'https://goerli.etherscan.io' + '/address/' + this.nodeAddresses?.ethereum;
+    return (
+      "https://goerli.etherscan.io" + "/address/" + this.nodeAddresses?.ethereum
+    );
   }
 
   async mounted() {
@@ -72,10 +74,21 @@ export default class Peers extends Vue {
 <template>
   <div>
     <div v-if="nodeAddresses">
-      <div>Overlay: {{nodeAddresses.overlay}}</div>
-      <div>Ethereum: <a :href="etherscanUrl" target='_blank'>{{nodeAddresses.ethereum}}</a></div>
-      <div>Public Key: {{nodeAddresses.public_key}}</div>
-      <div>PSS Public Key: {{nodeAddresses.pss_public_key}}</div>
+      <div>Overlay: {{ nodeAddresses.overlay }}</div>
+      <div>
+        Ethereum:
+        <a :href="etherscanUrl" target="_blank">{{ nodeAddresses.ethereum }}</a>
+      </div>
+      <div>Public Key: {{ nodeAddresses.public_key }}</div>
+      <div>PSS Public Key: {{ nodeAddresses.pss_public_key }}</div>
+
+      <el-table :data="nodeAddresses.underlay" style="width: 100%">
+        <el-table-column label="Addresses" >
+          <template #default="scope">
+            {{scope.row}}
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
 
     <div>
@@ -116,7 +129,10 @@ export default class Peers extends Vue {
       <el-table-column prop="address" label="Peer Address"> </el-table-column>
       <el-table-column label="Operations">
         <template #default="scope">
-          <el-button size="mini" type="danger" @click="handleDisconnect(scope.row)"
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDisconnect(scope.row)"
             >Disconnect</el-button
           >
         </template>
