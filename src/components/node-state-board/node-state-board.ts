@@ -3,6 +3,7 @@ import { Settlements } from '@ethersphere/bee-js/dist/modules/debug/settlements'
 import { defineComponent, ref, onMounted, computed } from 'vue'
 import beeClient from '../../services/beeClient'
 import { PeerState } from '../../models/PeerState'
+import notificationService from '../../services/notificationService'
 
 export default defineComponent({
   props: {
@@ -19,6 +20,9 @@ export default defineComponent({
         let peersList = composeSettlements(settlements, balances);        
 
         peersStateModel.value = peersList;
+      }
+      catch(e) {
+        notificationService.displayErrorMessage(e.message);
       }
       finally
       {

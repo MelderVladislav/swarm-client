@@ -1,6 +1,7 @@
 <script lang="ts">
 import beeClient from "../services/beeClient";
 import { Vue } from "vue-class-component";
+import notificationService from '../services/notificationService'
 import { Peer, NodeAddresses } from "../services/swarmClient"; // eslint-disable-line
 
 const { SwarmClient } = beeClient;
@@ -39,7 +40,7 @@ export default class Peers extends Vue {
       await SwarmClient.removePeer(peer.address);
       this.peers = await SwarmClient.getAllPeers();
     } catch (err) {
-      console.error(err);
+      notificationService.displayErrorMessage(err.message);
     } finally {
       this.loading = false;
     }
@@ -52,7 +53,7 @@ export default class Peers extends Vue {
       this.peers = await SwarmClient.getAllPeers();
       this.loading = false;
     } catch (err) {
-      console.error(err);
+      notificationService.displayErrorMessage(err.message);
     } finally {
       this.loading = false;
     }
