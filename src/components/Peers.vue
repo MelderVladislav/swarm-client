@@ -25,7 +25,7 @@ export default class Peers extends Vue {
     this.loading = false;
   }
 
-  async handleRemove(peer: Peer) {
+  async handleDisconnect(peer: Peer) {
     // 0dc56ee18f28e620dc7e1b8bc21c347457f559e7b68e53a4984a4b66584ee8ca
     // 1ed543a81ed25efd00a34c6fe8a3559e1f2cc6bb3d97096e2c9223cb0edbf033
     try {
@@ -107,8 +107,8 @@ export default class Peers extends Vue {
       <el-table-column prop="address" label="Peer Address"> </el-table-column>
       <el-table-column label="Operations">
         <template #default="scope">
-          <el-button size="mini" type="danger" @click="handleRemove(scope.row)"
-            >Remove</el-button
+          <el-button size="mini" type="danger" @click="handleDisconnect(scope.row)"
+            >Disconnect</el-button
           >
         </template>
       </el-table-column>
