@@ -1,18 +1,27 @@
 <script lang="ts">
 import beeClient from "../services/beeClient";
 import { Vue } from "vue-class-component";
+import { Peer, NodeAddresses } from "../services/swarmClient"; // eslint-disable-line
 
-type Peer = {
-  address: string;
-};
+const { SwarmClient } = beeClient;
 
 export default class Peers extends Vue {
   peers: Peer[] = [];
+  nodeAddresses: NodeAddresses;
+  blocklist: any[] = [];
+  welcomeMessage: string = "";
+
   loading = true;
   newPeerAddress = "";
 
   async mounted() {
-    this.peers = await beeClient.SwarmClient.getAllPeers();
+    await Promise.all([
+      SwarmClient.getAllPeers().then((x) => (this.peers = x)),
+      SwarmClient.getNodeAddresses().then((x) => (this.nodeAddresses = x)),
+      SwarmClient.getBlocklist().then((x) => (this.blocklist = x)),
+      SwarmClient.getWelcomeMessage().then((x) => (this.welcomeMessage = x)),
+    ]);
+
     this.loading = false;
   }
 
@@ -21,8 +30,8 @@ export default class Peers extends Vue {
     // 1ed543a81ed25efd00a34c6fe8a3559e1f2cc6bb3d97096e2c9223cb0edbf033
     try {
       this.loading = true;
-      await beeClient.SwarmClient.removePeer(peer.address);
-      this.peers = await beeClient.SwarmClient.getAllPeers();
+      await SwarmClient.removePeer(peer.address);
+      this.peers = await SwarmClient.getAllPeers();
     } catch (err) {
       console.error(err);
     } finally {
@@ -33,9 +42,20 @@ export default class Peers extends Vue {
   async handleAdd() {
     try {
       this.loading = true;
-      await beeClient.SwarmClient.connectToPeer(this.newPeerAddress);
-      this.peers = await beeClient.SwarmClient.getAllPeers();
+      await SwarmClient.connectToPeer(this.newPeerAddress);
+      this.peers = await SwarmClient.getAllPeers();
       this.loading = false;
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async handleSetWelcomeMessage() {
+    try {
+      this.loading = true;
+      await SwarmClient.setWelcomeMessage(this.welcomeMessage);
     } catch (err) {
       console.error(err);
     } finally {
@@ -47,13 +67,42 @@ export default class Peers extends Vue {
 
 <template>
   <div>
+    <div></div>
+
     <div>
       <el-input
         placeholder="New peer address"
         v-model="newPeerAddress"
-      ></el-input>
-      <el-button type="primary" @click="handleAdd">Add</el-button>
+        :disabled="loading"
+      >
+        <template #append>
+          <el-button
+            type="primary"
+            @click="handleAdd"
+            :disabled="loading"
+            :loading="loading"
+            >Add</el-button
+          >
+        </template>
+      </el-input>
+
+      <el-input
+        placeholder="Welcome message"
+        v-model="welcomeMessage"
+        :disabled="loading"
+      >
+        <template #append>
+          <el-button
+            type="primary"
+            @click="handleSetWelcomeMessage"
+            :disabled="loading"
+            :loading="loading"
+            >Set</el-button
+          >
+        </template>
+      </el-input>
     </div>
+
     <el-table v-loading="loading" :data="peers" style="width: 100%">
       <el-table-column prop="address" label="Peer Address"> </el-table-column>
       <el-table-column label="Operations">

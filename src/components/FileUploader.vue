@@ -38,15 +38,18 @@ export default class FileUploader extends Vue {
     >
       Your file is available at this address: <a :href="url" target="_blank">{{ url }}</a>
     </el-alert>
-    
+
     <p>Upload a file to Swarm</p>
+    
     <el-input
       placeholder="Attach file"
       ref="input"
       type="file"
       :disabled="uploading"
       v-model="filepath"
-    ></el-input>
+    >
+    </el-input>
+
     <el-button
       @click="uploadButtonClickHandler"
       type="primary"
