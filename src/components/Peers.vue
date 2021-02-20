@@ -8,7 +8,7 @@ const { SwarmClient } = beeClient;
 
 export default class Peers extends Vue {
   peers: Peer[] = [];
-  nodeAddresses: NodeAddresses;
+  nodeAddresses: NodeAddresses | null = null;
   blocklist: any[] = [];
   welcomeMessage: string = "";
 
@@ -74,7 +74,7 @@ export default class Peers extends Vue {
 
 <template>
   <div>
-    <div v-if="nodeAddresses">
+    <div v-if="!!nodeAddresses">
       <div>Overlay: {{ nodeAddresses.overlay }}</div>
       <div>
         Ethereum:
