@@ -14,12 +14,11 @@ export default defineComponent({
     onMounted(async () => {
       try
       {
-      let peersAddresses = await beeClient.SwarmClient.getAllPeers();
-      let settlements = (await beeClient.BeeDebug.getAllSettlements()).settlements
-      let balances = (await beeClient.BeeDebug.getAllBalances()).balances
-      let peersList = composeSettlements(settlements, balances);
+        let settlements = (await beeClient.BeeDebug.getAllSettlements()).settlements
+        let balances = (await beeClient.BeeDebug.getAllBalances()).balances
+        let peersList = composeSettlements(settlements, balances);        
 
-      peersStateModel.value = peersList;
+        peersStateModel.value = peersList;
       }
       finally
       {

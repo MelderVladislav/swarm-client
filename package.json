@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "proxy": "cross-env TARGET_URL=http://10.8.0.1:1635 PORT=1735 node proxy.js",
+    "proxy": "cross-env TARGET_URL=http://10.8.0.1:1635/ PORT=1735 node proxy.js",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -15,7 +15,8 @@
     "element-plus": "^1.0.2-beta.32",
     "vue": "^3.0.0",
     "vue-axios": "^3.2.4",
-    "vue-class-component": "^8.0.0-0"
+    "vue-class-component": "^8.0.0-0",
+    "vue-router": "^4.0.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",
