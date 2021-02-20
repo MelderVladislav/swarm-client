@@ -14,6 +14,10 @@ export default class Peers extends Vue {
   loading = true;
   newPeerAddress = "";
 
+  get etherscanUrl() {
+    return 'https://goerli.etherscan.io' + '/address/' + this.nodeAddresses?.ethereum;
+  }
+
   async mounted() {
     await Promise.all([
       SwarmClient.getAllPeers().then((x) => (this.peers = x)),
@@ -67,7 +71,12 @@ export default class Peers extends Vue {
 
 <template>
   <div>
-    <div></div>
+    <div v-if="nodeAddresses">
+      <div>Overlay: {{nodeAddresses.overlay}}</div>
+      <div>Ethereum: <a :href="etherscanUrl" target='_blank'>{{nodeAddresses.ethereum}}</a></div>
+      <div>Public Key: {{nodeAddresses.public_key}}</div>
+      <div>PSS Public Key: {{nodeAddresses.pss_public_key}}</div>
+    </div>
 
     <div>
       <el-input
