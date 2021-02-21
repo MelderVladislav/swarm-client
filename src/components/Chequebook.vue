@@ -65,12 +65,17 @@ export default class Chequebook extends Vue {
   async handleCashout(peer: { peerId: string; uncashedPayout: number }) {
     this.loading[peer.peerId] = true;
     await SwarmClient.cashoutCheque(peer.peerId);
-    await new Promise(async (res) => { // eslint-disable-line
-      while (true) { // eslint-disable-line
+    await new Promise(async (res) => {
+      // eslint-disable-line
+      while (true) {
+        // eslint-disable-line
         try {
           await new Promise((res) => setTimeout(res, 5000));
           const cashout = await SwarmClient.getLastCashoutByPeer(peer.peerId);
-          res(cashout);
+          if (cashout.result) {
+            res(cashout);
+            break;
+          }
         } catch (_) {} // eslint-disable-line
       }
     });
