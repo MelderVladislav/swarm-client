@@ -15,6 +15,10 @@
             <i class="el-icon-setting"></i>
             <span>Peers</span>
           </el-menu-item>
+          <el-menu-item index="/chequebook">
+            <i class="el-icon-setting"></i>
+            <span>Chequebook</span>
+          </el-menu-item>
         </el-menu>
       </el-col>
     <el-col :span="20">

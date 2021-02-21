@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import NodeStateBoard from "../components/node-state-board/NodeStateBoard.vue"
 import FileUploader from "../components/FileUploader.vue"
 import Peers from "../components/Peers.vue"
+import Chequebook from '../components/Chequebook.vue';
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: "/uploader",
     name: "FileUploader",
     component: FileUploader,
+  },
+  {
+    path: "/chequebook",
+    name: "Chequebook",
+    component: Chequebook,
   },
 ];
 

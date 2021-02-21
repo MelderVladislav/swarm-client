@@ -7,6 +7,9 @@
     <el-tab-pane label="Peers">
       <peers/>
     </el-tab-pane>
+    <el-tab-pane label="Chequebook">
+      <chequebook/>
+    </el-tab-pane>
   </el-tabs>
 </template>
 
