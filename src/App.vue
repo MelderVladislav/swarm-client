@@ -29,6 +29,10 @@
             <i class="el-icon-setting"></i>
             <span>Chequebook</span>
           </el-menu-item>
+          <el-menu-item index="/dashboard">
+            <i class="el-icon-setting"></i>
+            <span>Dashboard</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>

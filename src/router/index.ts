@@ -3,6 +3,7 @@ import NodeStateBoard from "../components/node-state-board/NodeStateBoard.vue"
 import FileUploader from "../components/FileUploader.vue"
 import Peers from "../components/Peers.vue"
 import Chequebook from '../components/Chequebook.vue';
+import Dashboard from '../components/Dashboard.vue';
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/chequebook",
     name: "Chequebook",
     component: Chequebook,
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
   },
 ];
 

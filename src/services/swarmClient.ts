@@ -63,6 +63,11 @@ export type CashoutChequeResult = {
   transactionHash: string;
 }
 
+export type ChequebookBalance = {
+  totalBalance: number;
+  availableBalance: number;
+}
+
 class SwarmClient {
   // connectivity
 
@@ -118,6 +123,14 @@ class SwarmClient {
 
   async cashoutCheque(peerId: string): Promise<CashoutChequeResult> {
     return axios.post(constants.BeeDebugAddress + "/chequebook/cashout/" + peerId).then(x => x.data);
+  }
+
+  async getChequebookAddress(): Promise<string> {
+    return axios.get(constants.BeeDebugAddress + "/chequebook/address").then(x => x.data.chequebookaddress);
+  }
+
+  async getChequebookBalance(): Promise<ChequebookBalance> {
+    return axios.get(constants.BeeDebugAddress + "/chequebook/balance").then(x => x.data);
   }
 }
 
