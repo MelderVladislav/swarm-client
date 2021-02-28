@@ -1,8 +1,18 @@
 <template>
-    <el-row class="tac">
-      <el-col :span="4">
-        <el-menu
-          router="true">
+  <el-container style="height: 100%">
+    <el-header
+      style="
+        position: sticky; 
+        top: 0px; 
+        z-index: 3; 
+        background-color: #fff;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px;
+      "
+      >beecon</el-header
+    >
+    <el-container>
+      <el-aside width="200px">
+        <el-menu router="true">
           <el-menu-item index="/">
             <i class="el-icon-menu"></i>
             <span>Nodes state board</span>
@@ -20,19 +30,19 @@
             <span>Chequebook</span>
           </el-menu-item>
         </el-menu>
-      </el-col>
-    <el-col :span="20">
-      <router-view />
-    </el-col>
-  </el-row>
+      </el-aside>
+      <el-main>
+        <router-view />
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue } from "vue-class-component";
 
 @Options({
-  components: {
-  },
+  components: {},
 })
 export default class App extends Vue {}
 </script>
