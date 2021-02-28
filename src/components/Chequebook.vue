@@ -16,7 +16,17 @@ export default class Chequebook extends Vue {
     list: true,
   };
 
-  percentage = 0;
+  loadedCount = 0;
+  
+  get percentage() {
+    return Math.round(this.loadedCount / this.peers.length * 100);
+  }
+
+  get totalUncashedPayout() {
+    let total = 0;
+    this.peers.forEach(x => total += x.uncashedPayout ?? 0);
+    return total;
+  }
 
   async mounted() {
     await Promise.all([this.listAllUncashed()]);
@@ -25,9 +35,10 @@ export default class Chequebook extends Vue {
   }
 
   async listAllUncashed() {
-    const peers = await SwarmClient.getLastCheques(); // get "$DEBUG_API/chequebook/cheque" | jq -r '.lastcheques | .[].peer'
+    this.loadedCount = 0;
+
+    const peers = await SwarmClient.getLastCheques();
     this.peers = peers.map((x) => ({ peerId: x.peer, uncashedPayout: null }));
-    const step = 100 / peers.length;
 
     const process = async (peer: LastCheque) => {
       const cumulativePayout = peer.lastreceived?.payout ?? 0;
@@ -36,28 +47,12 @@ export default class Chequebook extends Vue {
         .catch(() => 0);
       const uncashedPayout = cumulativePayout - cashedPayout;
 
-      //console.log(peer, uncashedPayout);
+      this.peers.find((x) => x.peerId === peer.peer)!.uncashedPayout = uncashedPayout;
 
-      this.peers.find(
-        (x) => x.peerId === peer.peer
-      )!.uncashedPayout = uncashedPayout;
-
-      if (uncashedPayout > 10000) {
-        //console.log(peer)
-        // post "$DEBUG_API/chequebook/cashout/$peer" | jq -r .transactionHash
-        // wait not null: get $DEBUG_API/chequebook/cashout/$peer | jq .result)"
-      }
-
-      this.percentage = Math.round(this.percentage + step);
+      this.loadedCount++;
     };
 
-    // for (const peer of peers) {
-    //   await process(peer);
-    // }
-
     await Promise.all(peers.map((peer) => process(peer)));
-
-    this.percentage = 100;
 
     console.log("done");
   }
@@ -80,15 +75,41 @@ export default class Chequebook extends Vue {
 
     this.loading[peer.peerId] = false;
   }
+
+  async handleCashoutAll() {
+    this.loading['cashoutAll'] = true;
+
+    const promises = this.peers.filter(x => x.uncashedPayout ?? 0 > 0)
+      .map(x => this.handleCashout({
+        peerId: x.peerId,
+        uncashedPayout: x.uncashedPayout ?? 0
+      }));
+
+    await Promise.all(promises);
+
+    this.loading['cashoutAll'] = false;
+  }
 }
 </script>
 
 <template>
   <div>
+    <div>
+      Total: {{totalUncashedPayout / 10000000000000000 }} BZZ
+      <el-button
+        size="mini"
+        :disabled="totalUncashedPayout === 0 || loading['cashoutAll']"
+        :loading="loading['cashoutAll']"
+        @click="handleCashoutAll()"
+        >Cashout All</el-button>
+    </div>
     <el-progress :percentage="percentage"></el-progress>
     <el-table :data="peers" style="width: 100%">
       <el-table-column prop="peerId" label="Peer"> </el-table-column>
-      <el-table-column prop="uncashedPayout" sortable label="Uncashed Payout">
+      <el-table-column prop="uncashedPayout" sortable sort-by="uncashedPayout" label="Uncashed Payout (BZZ)">
+        <template #default="scope">
+          {{ scope.row.uncashedPayout / 10000000000000000 }}
+        </template>
       </el-table-column>
       <el-table-column label="Operations">
         <template #default="scope">
@@ -96,12 +117,12 @@ export default class Chequebook extends Vue {
             size="mini"
             :disabled="
               scope.row.uncashedPayout === 0 ||
-              scope.row.uncashedPayout === null
+              scope.row.uncashedPayout === null ||
+              loading[scope.row.peerId]
             "
             :loading="loading[scope.row.peerId]"
             @click="handleCashout(scope.row)"
-            >Cashout</el-button
-          >
+            >Cashout</el-button>
         </template>
       </el-table-column>
     </el-table>
