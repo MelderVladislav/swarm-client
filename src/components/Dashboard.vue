@@ -34,26 +34,42 @@ export default class Dashboard extends Vue {
   async loadNodeAddresses() {
     this.nodeAddresses = await SwarmClient.getNodeAddresses();
   }
+
+  cropAddress(address: string) {
+      return address.substring(0, 6) + '...' + address.substring(38, 42);
+  }
 }
 </script>
 
 <template>
   <div v-if="!this.loading['list']">
-    <div>
-      <h3>Overlay Ethereum Address</h3>
-      <p><a :href="'https://goerli.etherscan.io/address/' + nodeAddresses.ethereum" target="_blank">{{ nodeAddresses.ethereum }}</a></p>
-    </div>
-    <div>
-      <h3>Chequebook Ethereum Address</h3>
-      <p><a :href="'https://goerli.etherscan.io/address/' + chequebookAddress" target="_blank">{{ chequebookAddress }}</a></p>
-    </div>
-    <div>
-      <h3>Total Balance</h3>
-      <p>{{ balances.totalBalance / 10000000000000000 }} BZZ</p>
-    </div>
-    <div>
-      <h3>Available Balance</h3>
-      <p>{{ balances.availableBalance / 10000000000000000 }} BZZ</p>
-    </div>
+      <el-row :gutter="20" style="padding-bottom: 20px;">
+        <el-col :span="12">
+            <el-card class="box-card">
+                <h3>Overlay Ethereum Address</h3>
+                <p><a :href="'https://goerli.etherscan.io/address/' + nodeAddresses.ethereum" target="_blank">{{ nodeAddresses.ethereum }}</a></p>
+            </el-card>
+        </el-col>
+        <el-col :span="12">
+            <el-card class="box-card">
+                <h3>Chequebook Ethereum Address</h3>
+                <p><a :href="'https://goerli.etherscan.io/address/' + chequebookAddress" target="_blank">{{ chequebookAddress }}</a></p>
+            </el-card>
+        </el-col>
+    </el-row>   
+      <el-row :gutter="20" style="padding-bottom: 20px;">
+        <el-col :span="6">
+            <el-card class="box-card">
+                <h3>Total Balance</h3>
+                <p>{{ (balances.totalBalance / 10000000000000000).toFixed(6) }} BZZ</p>
+            </el-card>
+        </el-col>
+        <el-col :span="6">
+            <el-card class="box-card">
+                <h3>Available Balance</h3>
+                <p>{{ (balances.availableBalance / 10000000000000000).toFixed(6) }} BZZ</p>
+            </el-card>
+        </el-col>
+    </el-row>   
   </div>
 </template>
